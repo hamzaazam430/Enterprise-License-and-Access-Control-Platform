@@ -1,99 +1,202 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Enterprise License & Access Control Platform (ELACP)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The **Enterprise License & Access Control Platform (ELACP)** is a production-grade, multi-tenant SaaS backend designed to manage **subscriptions, licenses, device binding, and role-based access control** for enterprise software distribution.
 
-## Description
+This project is intentionally built as a **senior-level flagship system** to demonstrate real-world system design, clean architecture, security practices, and scalability considerations.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## Key Capabilities
 
-```bash
-$ npm install
+* Multi-tenant SaaS architecture
+* JWT-based authentication with refresh tokens
+* Role-Based Access Control (RBAC) with policy enforcement
+* Subscription plans with license limits
+* License generation, assignment, and revocation
+* One-license–one-device enforcement (device binding)
+* Secure license validation APIs for client applications
+* Centralized audit logging
+* Dockerized deployment with CI/CD readiness
+
+---
+
+## Architecture
+
+### Architectural Style
+
+* **Modular Monolith**
+* **Hexagonal Architecture (Ports & Adapters)**
+
+This approach provides:
+
+* Strong domain isolation
+* High maintainability
+* Clear separation of concerns
+* A clean migration path to microservices if needed
+
+### High-Level Layers
+
+* **API Layer** – REST controllers
+* **Application Layer** – Use cases and orchestration
+* **Domain Layer** – Business rules and entities
+* **Infrastructure Layer** – Database, persistence, external adapters
+
+---
+
+## Modules
+
+| Module       | Description                                  |
+| ------------ | -------------------------------------------- |
+| Auth         | Authentication, JWT issuance, refresh tokens |
+| Tenant       | Organization (tenant) lifecycle management   |
+| User         | User accounts and credentials                |
+| RBAC         | Roles, permissions, and access policies      |
+| Subscription | Plans, license limits, expiry                |
+| License      | License pool generation and assignment       |
+| Device       | Device fingerprinting and binding            |
+| Enforcement  | Runtime license validation                   |
+| Audit        | Security and activity logging                |
+| Shared       | Common utilities and infrastructure          |
+
+---
+
+## Core Use Cases
+
+* Platform admin creates and manages organizations (tenants)
+* Organizations receive subscriptions with license quotas
+* Org admins create users and assign roles
+* Licenses are assigned to users and bound to devices
+* Client applications validate licenses securely at runtime
+* Admins revoke licenses or devices centrally
+* All sensitive actions are audit logged
+
+---
+
+## Data Model
+
+The system uses a relational data model designed for clarity, integrity, and scalability.
+
+**Core entities include:**
+
+* Tenant
+* User
+* Role
+* Subscription
+* License
+* Device
+* LicenseAssignment
+* AuditLog
+
+An ERD diagram is included in the `/docs` directory.
+
+---
+
+## API Documentation
+
+All APIs are documented using **OpenAPI (Swagger)**.
+
+Once the application is running:
+
+```
+http://localhost:3000/docs
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## Security Design
 
-# watch mode
-$ npm run start:dev
+* Password hashing using industry-standard algorithms
+* Stateless JWT authentication
+* Refresh token rotation
+* Role-based authorization checks at API and service layers
+* Device fingerprint validation
+* Rate limiting on sensitive endpoints
 
-# production mode
-$ npm run start:prod
+---
+
+## Tech Stack
+
+### Backend
+
+* Node.js (Fastify) **or** Java Spring Boot
+* PostgreSQL
+* Prisma / TypeORM (Node) or JPA (Java)
+
+### DevOps
+
+* Docker & Docker Compose
+* GitHub Actions (CI)
+
+---
+
+## Local Development Setup
+
+### Prerequisites
+
+* Docker
+* Docker Compose
+* Node.js or Java (depending on implementation)
+
+### Run Locally
+
+```
+docker-compose up --build
 ```
 
-## Run tests
+The API will be available at:
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+http://localhost:3000
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## CI/CD
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The project includes a basic CI pipeline:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+* Linting
+* Automated tests
+* Docker image build
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+This pipeline is designed to be easily extended for cloud deployments.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Design Decisions (Why This Matters)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+* **Modular Monolith over Microservices**: reduces complexity while preserving clean boundaries
+* **Hexagonal Architecture**: enables testability and long-term maintainability
+* **Explicit RBAC & Policies**: mirrors real enterprise security models
+* **License Enforcement Layer**: separates business rules from transport concerns
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Future Enhancements
 
-## Stay in touch
+* Payment gateway integration
+* Usage analytics and reporting
+* Event-driven architecture (Kafka/RabbitMQ)
+* Service decomposition into microservices
+* Offline license caching
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
+
+## Who This Project Is For
+
+This project is intended to demonstrate:
+
+* Senior-level backend engineering skills
+* System design and architecture expertise
+* Security-first thinking
+* Real-world SaaS product development
+
+It is suitable for **technical interviews, portfolio reviews, and architectural discussions**.
+
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is provided for educational and portfolio purposes.
